@@ -4,15 +4,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractFunction implements TermCollection {
+	private String name;
+	private int size;
+	private int base;
+	private Sort sortType;
 	private List<Sort> arguments;
 	
 	public AbstractFunction() {
+		this.name = null;
+		this.size = 0;
+		this.base = -1;
+		this.sortType = null;
 		this.arguments = new ArrayList<Sort>();
 	}
 	
 	public AbstractFunction(String name, Sort sortType) {
-		//super(name, sortType);
+		this.name = name;
+		this.size = 0;
+		this.base = -1;
+		this.sortType = sortType;
 		this.arguments = new ArrayList<Sort>();
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public void setSize(int size) {
+		this.size = size;
+	}
+	
+	public int getSize() {
+		if (this.size < 1 ) {
+			this.size = this.calculateSize();
+		}
+		return this.size;
+	}
+	
+	public void setBase(int base) {
+		this.base = base;
+	}
+	
+	public int getBase() {
+		return this.base;
+	}
+	
+	public void setSortType(Sort sortType) {
+		this.sortType = sortType;
+	}
+	
+	public Sort getSortType() {
+		return this.sortType;
 	}
 	
 	public void addArgument(Sort arg) {
@@ -29,6 +75,15 @@ public abstract class AbstractFunction implements TermCollection {
 				size *= sort.getSize();
 		}
 		return size;
+	}
+	
+	public boolean dependsOn(Sort sort) {
+		for (Sort s : this.arguments) {
+			if (s == sort) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public String getTerm(int index) {

@@ -14,9 +14,28 @@ public class Sort implements SortContainer, ObjectTermCollection {
 		this.containers = new HashMap<String, ObjectTermCollection>();
 	}
 	
+	public String getName() {
+		return this.name;
+	}
+
+	public int getSize() {
+		if (this.size == 0) {
+			this.size = this.calculateSize();
+		}
+		return this.size;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+	
 	public void addObjectTermContainer(ObjectTermCollection container) {
 		if (!(container instanceof TermCollection)) {
-			throw new RuntimeException("");
+			throw new RuntimeException("Sort can only contain TermCollection: " + this.name);
 		}
 		((TermCollection)container).setSortType(this);
 		this.containers.put(container.getName(), container);
@@ -70,24 +89,5 @@ public class Sort implements SortContainer, ObjectTermCollection {
 			}
 		}
 		return false;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public int getSize() {
-		if (this.size == 0) {
-			this.size = this.calculateSize();
-		}
-		return this.size;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
 	}
 }
