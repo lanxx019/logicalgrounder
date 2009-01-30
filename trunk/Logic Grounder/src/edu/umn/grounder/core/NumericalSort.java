@@ -1,6 +1,6 @@
 package edu.umn.grounder.core;
 
-public class NumericalSort implements ObjectTermCollection {
+public class NumericalSort implements ObjectTermContainer {
 
 	public String getObjectTerm(int index) {
 		// TODO Auto-generated method stub
