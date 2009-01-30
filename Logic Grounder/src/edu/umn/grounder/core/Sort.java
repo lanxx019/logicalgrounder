@@ -3,15 +3,15 @@ package edu.umn.grounder.core;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Sort implements SortContainer, ObjectTermCollection {
+public class Sort implements SortContainer, ObjectTermContainer {
 	private String name;
 	private int size;
-	private Map<String, ObjectTermCollection> containers;
+	private Map<String, ObjectTermContainer> containers;
 	
 	public Sort(String name) {
 		this.name = name;
 		this.size = 0;
-		this.containers = new HashMap<String, ObjectTermCollection>();
+		this.containers = new HashMap<String, ObjectTermContainer>();
 	}
 	
 	public String getName() {
@@ -33,7 +33,7 @@ public class Sort implements SortContainer, ObjectTermCollection {
 		this.size = size;
 	}
 	
-	public void addObjectTermContainer(ObjectTermCollection container) {
+	public void addObjectTermContainer(ObjectTermContainer container) {
 		if (!(container instanceof TermCollection)) {
 			throw new RuntimeException("Sort can only contain TermCollection: " + this.name);
 		}
@@ -41,7 +41,7 @@ public class Sort implements SortContainer, ObjectTermCollection {
 		this.containers.put(container.getName(), container);
 	}
 	
-	public ObjectTermCollection getObjectTermContainer(String name) {
+	public ObjectTermContainer getObjectTermContainer(String name) {
 		return this.containers.get(name);
 	}
 	
@@ -49,7 +49,7 @@ public class Sort implements SortContainer, ObjectTermCollection {
 		return this.containers.containsKey(containerName);
 	}
 	
-	public boolean hasObjectTermContainer(ObjectTermCollection container) {
+	public boolean hasObjectTermContainer(ObjectTermContainer container) {
 		return this.containers.containsValue(container);
 	}
 	
@@ -64,7 +64,7 @@ public class Sort implements SortContainer, ObjectTermCollection {
 		
 		// Update the startIndex for each Container.
 		int base = 0;
-		for (ObjectTermCollection container : this.containers.values()) {
+		for (ObjectTermContainer container : this.containers.values()) {
 			((TermCollection)container).setBase(base);
 			base += container.getSize();
 		}
