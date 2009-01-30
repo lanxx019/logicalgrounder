@@ -18,12 +18,15 @@ public abstract class AbstractFunction implements TermCollection {
 		this.arguments = new ArrayList<Sort>();
 	}
 	
-	public AbstractFunction(String name, Sort sortType) {
+	public AbstractFunction(String name) {
+		this();
 		this.name = name;
-		this.size = 0;
-		this.base = -1;
+	}
+	
+	public AbstractFunction(String name, Sort sortType) {
+		this();
+		this.name = name;
 		this.sortType = sortType;
-		this.arguments = new ArrayList<Sort>();
 	}
 	
 	public void setName(String name) {
@@ -87,29 +90,39 @@ public abstract class AbstractFunction implements TermCollection {
 	}
 	
 	public String getTerm(int index) {
-		if (this.arguments.size() == 0) {
-			if (index == this.getBase()) {
-			return this.getName();
-			} else {
-				return null;
-			}
+		if (!this.isLegalIndex(index)) {
+			return null;
 		} else {
-			String result = this.getName() + "(";
-			int quot = index;
-			int rem = 0;
-			for (int i = 0; i < this.arguments.size(); i++) {
-				Sort sort = this.arguments.get(i);
-				int temp = quot;
-				rem = sort.getSize();
-				quot = temp / rem;
-				rem = temp % rem;
-				if (i == (this.arguments.size() - 1)) {
-					result += sort.getObjectTerm(rem);
-				} else {
-					result += sort.getObjectTerm(rem) + ", ";
+			if (this.size == 1) {
+				return this.name;
+			} else {
+				String result = this.getName() + "(";
+				int quot = index;
+				int rem = 0;
+				for (int i = 0; i < this.arguments.size(); i++) {
+					Sort sort = this.arguments.get(i);
+					int temp = quot;
+					rem = sort.getSize();
+					quot = temp / rem;
+					rem = temp % rem;
+					if (i == (this.arguments.size() - 1)) {
+						result += sort.getObjectTerm(rem);
+					} else {
+						result += sort.getObjectTerm(rem) + ", ";
+					}
 				}
+				return result + ")";
 			}
-			return result + ")";
+		}
+	}
+	
+	public boolean isLegalIndex(int index) {
+		int min = this.base;
+		int max = this.base + this.size;
+		if (index >= min && index < max) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 }
