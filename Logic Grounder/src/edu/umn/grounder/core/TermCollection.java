@@ -1,8 +1,8 @@
 package edu.umn.grounder.core;
 
-public interface NonSortContainer extends Container {
+public interface TermCollection extends Container {
 	
-	public void setBase(int startIndex);
+	public void setBase(int base);
 	
 	public int getBase();
 	

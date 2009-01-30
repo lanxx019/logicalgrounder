@@ -1,6 +1,6 @@
 package edu.umn.grounder.core;
 
-public class ConstantFunction extends AbstractFunction implements ConstantTermContainer {
+public class ConstantFunction extends AbstractFunction implements ConstantTermCollection {
 
 	@Override
 	public String getConstantTerm(int index) {

@@ -3,23 +3,26 @@ package edu.umn.grounder.core;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Sort implements Container, ObjectTermContainer {
+public class Sort implements SortContainer, ObjectTermCollection {
 	private String name;
 	private int size;
-	private Map<String, ObjectTermContainer> containers;
+	private Map<String, ObjectTermCollection> containers;
 	
 	public Sort(String name) {
 		this.name = name;
 		this.size = 0;
-		this.containers = new HashMap<String, ObjectTermContainer>();
+		this.containers = new HashMap<String, ObjectTermCollection>();
 	}
 	
-	public void addObjectTermContainer(ObjectTermContainer container) {
-		((NonSortContainer)container).setSortType(this);
+	public void addObjectTermContainer(ObjectTermCollection container) {
+		if (!(container instanceof TermCollection)) {
+			throw new RuntimeException("");
+		}
+		((TermCollection)container).setSortType(this);
 		this.containers.put(container.getName(), container);
 	}
 	
-	public ObjectTermContainer getObjectTermContainer(String name) {
+	public ObjectTermCollection getObjectTermContainer(String name) {
 		return this.containers.get(name);
 	}
 	
@@ -27,7 +30,7 @@ public class Sort implements Container, ObjectTermContainer {
 		return this.containers.containsKey(containerName);
 	}
 	
-	public boolean hasObjectTermContainer(ObjectTermContainer container) {
+	public boolean hasObjectTermContainer(ObjectTermCollection container) {
 		return this.containers.containsValue(container);
 	}
 	
@@ -42,8 +45,8 @@ public class Sort implements Container, ObjectTermContainer {
 		
 		// Update the startIndex for each Container.
 		int base = 0;
-		for (ObjectTermContainer container : this.containers.values()) {
-			((NonSortContainer)container).setBase(base);
+		for (ObjectTermCollection container : this.containers.values()) {
+			((TermCollection)container).setBase(base);
 			base += container.getSize();
 		}
 	}
