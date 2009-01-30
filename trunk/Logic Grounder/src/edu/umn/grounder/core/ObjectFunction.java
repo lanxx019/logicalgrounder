@@ -7,8 +7,6 @@ public class ObjectFunction extends AbstractFunction implements ObjectTermContai
 	private static Logger log = LoggerFactory.getLogger(ObjectFunction.class);
 	
 	public String getObjectTerm(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getTerm(index);
 	}
-
 }

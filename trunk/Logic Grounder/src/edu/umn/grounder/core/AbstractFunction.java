@@ -3,12 +3,16 @@ package edu.umn.grounder.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public abstract class AbstractFunction implements TermCollection {
 	private String name;
 	private int size;
 	private int base;
 	private Sort sortType;
 	private List<Sort> arguments;
+	private static Logger log = LoggerFactory.getLogger(AbstractFunction.class);
 	
 	public AbstractFunction() {
 		this.name = null;
@@ -53,6 +57,9 @@ public abstract class AbstractFunction implements TermCollection {
 	}
 	
 	public int getBase() {
+		if (this.base < 0) {
+			AbstractFunction.log.debug("Function " + this.getName() + "'s base value is -1.");
+		}
 		return this.base;
 	}
 	
@@ -117,8 +124,8 @@ public abstract class AbstractFunction implements TermCollection {
 	}
 	
 	public boolean isLegalIndex(int index) {
-		int min = this.base;
-		int max = this.base + this.size;
+		int min = this.getBase();
+		int max = this.getBase() + this.getSize();
 		if (index >= min && index < max) {
 			return true;
 		} else {

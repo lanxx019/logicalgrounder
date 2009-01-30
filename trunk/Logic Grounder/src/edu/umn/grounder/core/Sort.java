@@ -105,4 +105,22 @@ public class Sort implements SortContainer, ObjectTermContainer {
 		}
 		return false;
 	}
+	
+	public int getNumberOfContainers() {
+		return this.containers.size();
+	}
+	
+	public String toString() {
+		String result = this.name + ": ";
+		int count = 0;
+		for (ObjectTermContainer container : this.containers.values()) {
+			count++;
+			if (count < this.containers.size()) {
+				result += container.getName() + ", ";
+			} else {
+				result = container.getName();
+			}
+		}
+		return result;	
+	}
 }
