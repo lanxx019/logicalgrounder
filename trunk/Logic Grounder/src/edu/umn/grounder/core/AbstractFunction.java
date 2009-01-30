@@ -3,9 +3,8 @@ package edu.umn.grounder.core;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractFunction implements NonSortContainer {
+public abstract class AbstractFunction implements TermCollection {
 	private List<Sort> arguments;
-	
 	
 	public AbstractFunction() {
 		this.arguments = new ArrayList<Sort>();

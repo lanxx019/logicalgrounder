@@ -1,10 +1,7 @@
 package edu.umn.grounder.core;
 
-public interface Container {	
-	public String getName();
-	
-	public void setName(String name);
-	
+public interface Container extends Component {
+
 	public void setSize(int size);
 	
 	public int getSize();

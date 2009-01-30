@@ -1,6 +1,6 @@
 package edu.umn.grounder.core;
 
-public class ObjectFunction extends AbstractFunction implements ObjectTermContainer {
+public class ObjectFunction extends AbstractFunction implements ObjectTermCollection {
 
 
 	@Override

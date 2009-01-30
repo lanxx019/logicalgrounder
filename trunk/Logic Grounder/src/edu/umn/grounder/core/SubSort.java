@@ -1,6 +1,6 @@
 package edu.umn.grounder.core;
 
-public class SubSort implements ObjectTermContainer {
+public class SubSort implements ObjectTermCollection {
 
 	public int calculateSize() {
 		// TODO Auto-generated method stub
