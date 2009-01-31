@@ -23,6 +23,7 @@ public class SubSort implements ObjectTermContainer, TermCollection {
 		this();
 		this.sort = sort;
 		this.name = "SubSort(" + this.sort.getName() + ")";
+		SubSort.log.debug("Create SubSort from Sort %s", this.sort.getName());
 	}
 
 	public int getSize() {
@@ -64,7 +65,7 @@ public class SubSort implements ObjectTermContainer, TermCollection {
 	}
 	
 	public String getObjectTerm(int index) {
-		// TODO Need to varify if this is correct.
+		// TODO Need to verify if this is correct.
 		return this.sort.getObjectTerm(index - this.base);
 	}
 
