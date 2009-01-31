@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/blan/My Documents/EclipseProjects/Logic Grounder/lib/log4j-1.2.15.jar"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/blan/My Documents/EclipseProjects/Logic Grounder/lib/slf4j-api-1.5.6.jar"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/blan/My Documents/EclipseProjects/Logic Grounder/lib/slf4j-log4j12-1.5.6.jar"/>
+	<classpathentry kind="lib" path="/home/lanb/Documents/EclipseProjects/Logic Grounder/lib/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="/home/lanb/Documents/EclipseProjects/Logic Grounder/lib/slf4j-api-1.5.6.jar"/>
+	<classpathentry kind="lib" path="/home/lanb/Documents/EclipseProjects/Logic Grounder/lib/slf4j-log4j12-1.5.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
