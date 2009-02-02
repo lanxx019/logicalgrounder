@@ -3,55 +3,70 @@ package edu.umn.grounder.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NumericalSort implements SortContainer, ObjectTermContainer {
+public class NumericalSort implements SortContainer {
+	private String name;
+	private int first;
+	private int last;
+	private int size;
 	private static Logger log = LoggerFactory.getLogger(NumericalSort.class);
 
-	@Override
+	public NumericalSort() {
+		this.name = null;
+		this.first = -1;
+		this.last = -1;
+		this.size = 0;
+	}
+	
+	public NumericalSort(String name) {
+		this();
+		this.name = name;
+	}
+	
+	public NumericalSort(String name, int first, int last) {
+		this(name);
+		if (last < first) {
+			throw new RuntimeException(this.name + ": illegal range.");
+		}
+		this.first = first;
+		this.last = last;
+	}
+	
 	public void init() throws FinitenessCheckFailedException {
-		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public int calculateSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return last - first + 1;
 	}
 
-	@Override
 	public boolean dependsOn(Sort sort) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public int getSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		if (this.size == 0) {
+			this.size = this.calculateSize();
+		}
+		return this.size;
 	}
 
-	@Override
 	public void setSize(int size) {
-		// TODO Auto-generated method stub
-		
+		this.size = size;
 	}
 
-	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.name;
 	}
 
-	@Override
 	public void setName(String name) {
-		// TODO Auto-generated method stub
-		
+		this.name = name;
 	}
 
-	@Override
 	public String getObjectTerm(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		return Integer.toString(this.first + index - 1);
 	}
 
+	public String toString() {
+		return this.name + this.first + "..." + this.last;
+	}
 }
