@@ -11,7 +11,7 @@ public abstract class AbstractFunction implements TermCollection {
 	private int size;
 	private int base;
 	private Sort sortType;
-	private List<Sort> arguments;
+	private List<SortContainer> arguments;
 	private static Logger log = LoggerFactory.getLogger(AbstractFunction.class);
 	
 	public AbstractFunction() {
@@ -19,7 +19,7 @@ public abstract class AbstractFunction implements TermCollection {
 		this.size = 0;
 		this.base = -1;
 		this.sortType = null;
-		this.arguments = new ArrayList<Sort>();
+		this.arguments = new ArrayList<SortContainer>();
 	}
 	
 	public AbstractFunction(String name) {
@@ -71,24 +71,24 @@ public abstract class AbstractFunction implements TermCollection {
 		return this.sortType;
 	}
 	
-	public void addArgument(Sort arg) {
+	public void addArgument(SortContainer arg) {
 		this.arguments.add(arg);
 	}
 	
-	public Sort getArgument(int index) {
+	public SortContainer getArgument(int index) {
 		return this.arguments.get(index);
 	}
 	
 	public int calculateSize() {
 		int size = 1;
-		for (Sort sort : this.arguments) {
+		for (SortContainer sort : this.arguments) {
 				size *= sort.getSize();
 		}
 		return size;
 	}
 	
 	public boolean dependsOn(Sort sort) {
-		for (Sort s : this.arguments) {
+		for (SortContainer s : this.arguments) {
 			if (s == sort) {
 				return true;
 			}
@@ -107,7 +107,7 @@ public abstract class AbstractFunction implements TermCollection {
 				int quot = index;
 				int rem = 0;
 				for (int i = 0; i < this.arguments.size(); i++) {
-					Sort sort = this.arguments.get(i);
+					SortContainer sort = this.arguments.get(i);
 					int temp = quot;
 					rem = sort.getSize();
 					quot = temp / rem;
@@ -131,5 +131,22 @@ public abstract class AbstractFunction implements TermCollection {
 		} else {
 			return false;
 		}
+	}
+	
+	public String toString() {
+		String result = this.name;
+		if (this.arguments.size() != 0) {
+			int count = 1;
+			result += "(";
+			for (SortContainer container : this.arguments) {
+				if (count < this.arguments.size()) {
+					result += container.getName() + ",";
+				} else {
+					result += container.getName();
+				}
+				count++;
+			}
+		}
+		return result;
 	}
 }
