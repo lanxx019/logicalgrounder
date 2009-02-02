@@ -8,7 +8,7 @@ public class Variable implements Component {
 	public Variable() {
 		this.name = null;
 		this.sortType = null;
-		this.currentValue = -1;
+		this.currentValue = 0;
 	}
 	
 	public Variable(String name) {
