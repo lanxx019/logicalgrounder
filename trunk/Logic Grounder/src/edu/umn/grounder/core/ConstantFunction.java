@@ -8,6 +8,6 @@ public class ConstantFunction extends AbstractFunction implements ConstantTermCo
 	
 	public String getConstantTerm(int index) {
 		// TODO Auto-generated method stub
-		return null;
+		return this.getTerm(index);
 	}
 }

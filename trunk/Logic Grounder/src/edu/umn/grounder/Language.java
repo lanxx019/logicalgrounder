@@ -65,4 +65,8 @@ public class Language {
 			return null;
 		}
 	}
+	
+	public void init() {
+		// TODO init all sorts and all the constants.
+	}
 }
