@@ -51,4 +51,12 @@ public class Variable implements Component {
 			return false;
 		}
 	}
+	
+	public void initValue() {
+		this.currentValue = 0;
+	}
+	
+	public String toString() {
+		return this.sortType.getName() + ": " + this.name;
+	}
 }
