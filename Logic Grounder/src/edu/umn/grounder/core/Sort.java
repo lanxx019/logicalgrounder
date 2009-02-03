@@ -118,7 +118,7 @@ public class Sort implements SortContainer, ObjectTermContainer {
 			if (count < this.containers.size()) {
 				result += container.toString() + ", ";
 			} else {
-				result = container.toString();
+				result += container.toString();
 			}
 		}
 		return result;	
