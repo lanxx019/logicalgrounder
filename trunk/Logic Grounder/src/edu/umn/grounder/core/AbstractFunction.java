@@ -160,6 +160,7 @@ public abstract class AbstractFunction implements TermCollection {
 				}
 				count++;
 			}
+			result += ")";
 		}
 		return result;
 	}
