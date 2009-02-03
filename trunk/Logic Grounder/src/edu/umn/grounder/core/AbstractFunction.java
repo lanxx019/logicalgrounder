@@ -123,9 +123,18 @@ public abstract class AbstractFunction implements TermCollection {
 		}
 	}
 	
-	public String getTerm(int[] indexes) {
-		// TODO
-		return null;
+	public int getTermIndex(int[] indexes) {
+		int index = 0;
+		int base = 1;
+		if (indexes.length != this.arguments.size()) {
+			throw new RuntimeException(this.name + ": wrong numbers of arguments.");
+		}
+		for (int i = this.arguments.size() - 1; i >= 0; i--) {
+			index += indexes[i] * base;
+			base *= this.arguments.get(i).getSize();
+		}
+		index += this.getBase();
+		return index;
 	}
 	
 	public boolean isLegalIndex(int index) {
