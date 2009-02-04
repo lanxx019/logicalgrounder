@@ -1,6 +1,6 @@
 package edu.umn.grounder.constraint;
 
-import edu.umn.grounder.core.Variable;
+import edu.umn.grounder.instance.Variable;
 
 public abstract class AbstractConstraint implements Constraint {
 	private int number;
