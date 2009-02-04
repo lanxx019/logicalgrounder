@@ -70,7 +70,7 @@ public class Sort implements SortContainer, ObjectTermContainer {
 		// Call calculateSize() for each Container and calculate the size.
 		this.setSize(this.calculateSize());
 
-		// Update the startIndex for each Container.
+		// Update the base for each Container.
 		int base = 0;
 		for (ObjectTermContainer container : this.containers.values()) {
 			((TermCollection) container).setBase(base);
@@ -122,5 +122,13 @@ public class Sort implements SortContainer, ObjectTermContainer {
 			}
 		}
 		return result;	
+	}
+
+	public boolean isValidIndex(int index) {
+		if (index >= 0 && index < this.getSize()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

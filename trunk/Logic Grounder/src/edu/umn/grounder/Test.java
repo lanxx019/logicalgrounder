@@ -1,6 +1,8 @@
 package edu.umn.grounder;
 
 import edu.umn.grounder.core.*;
+import edu.umn.grounder.instance.AbstractFunctionInstance;
+import edu.umn.grounder.instance.ConstantFunctionInstance;
 import edu.umn.grounder.instance.Variable;
 
 public class Test {
@@ -48,7 +50,14 @@ public class Test {
 		lan.init();
 		
 		System.out.println(lan.toString());
-		System.out.println(s.getSize());
+		
+		AbstractFunctionInstance test = new ConstantFunctionInstance(f);
+		test.addArgument(u);
+		System.out.println(f.getBase());
+		while (u.hasNextValue()) {
+			System.out.println(test.getCurrentValue());
+			u.updateValue();
+		}
 	}
 
 }
