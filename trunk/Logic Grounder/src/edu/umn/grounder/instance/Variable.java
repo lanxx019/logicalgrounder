@@ -1,6 +1,8 @@
-package edu.umn.grounder.core;
+package edu.umn.grounder.instance;
 
-public class Variable implements Component {
+import edu.umn.grounder.core.Sort;
+
+public class Variable implements Instance {
 	private String name;
 	private Sort sortType;
 	private int currentValue;
@@ -58,5 +60,9 @@ public class Variable implements Component {
 	
 	public String toString() {
 		return this.sortType.getName() + ": " + this.name;
+	}
+
+	public int getCurrentValue() {
+		return this.currentValue;
 	}
 }

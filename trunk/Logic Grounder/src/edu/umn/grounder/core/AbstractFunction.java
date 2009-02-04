@@ -79,6 +79,10 @@ public abstract class AbstractFunction implements TermCollection {
 		return this.arguments.get(index);
 	}
 	
+	public int getNumberOfArguments() {
+		return this.arguments.size();
+	}
+	
 	public int calculateSize() {
 		int size = 1;
 		for (SortContainer sort : this.arguments) {
@@ -124,17 +128,21 @@ public abstract class AbstractFunction implements TermCollection {
 	}
 	
 	public int getTermIndex(int[] indexes) {
-		int index = 0;
-		int base = 1;
 		if (indexes.length != this.arguments.size()) {
 			throw new RuntimeException(this.name + ": wrong numbers of arguments.");
 		}
-		for (int i = this.arguments.size() - 1; i >= 0; i--) {
-			index += indexes[i] * base;
-			base *= this.arguments.get(i).getSize();
+		if (this.arguments.size() == 0) {
+			return this.getBase();
+		} else {
+			int index = 0;
+			int base = 1;
+			for (int i = this.arguments.size() - 1; i >= 0; i--) {
+				index += indexes[i] * base;
+				base *= this.arguments.get(i).getSize();
+			}
+			index += this.getBase();
+			return index;
 		}
-		index += this.getBase();
-		return index;
 	}
 	
 	public boolean isLegalIndex(int index) {

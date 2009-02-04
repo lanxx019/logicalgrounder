@@ -1,6 +1,7 @@
 package edu.umn.grounder;
 
 import edu.umn.grounder.core.*;
+import edu.umn.grounder.instance.Variable;
 
 public class Test {
 

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.umn.grounder.core.*;
+import edu.umn.grounder.instance.Variable;
 
 public class Language {
 	private Map<String, SortContainer> sorts;
