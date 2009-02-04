@@ -39,11 +39,11 @@ public class Variable implements Instance {
 		this.sortType = sortType;
 	}
 	
-	public int getNextValue() {
+	public void updateValue() {
 		if (!this.hasNextValue()) {
 			throw new RuntimeException(this.name + ": value out of range.");
 		}
-		return this.currentValue++;
+		this.currentValue++;
 	}
 	
 	public boolean hasNextValue() {

@@ -69,4 +69,12 @@ public class NumericalSort implements SortContainer {
 	public String toString() {
 		return this.name + this.first + "..." + this.last;
 	}
+
+	public boolean isValidIndex(int index) {
+		if (index >= 0 && index < this.getSize()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

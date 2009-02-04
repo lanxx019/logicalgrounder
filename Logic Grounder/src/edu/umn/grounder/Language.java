@@ -68,12 +68,21 @@ public class Language {
 	}
 
 	public void init() {
+		// Init all the sort containers.
 		for (SortContainer container : this.sorts.values()) {
 			try {
 				container.init();
 			} catch (FinitenessCheckFailedException e) {
 				throw new RuntimeException(container.getName()
 						+ ": fail the finiteness check.");
+			}
+		}
+		// Update the base value for all ConstantTermContainer
+		int base = 1;
+		for (ConstantTermContainer constant : this.ConstantTermContainers.values()) {
+			if (constant instanceof TermCollection) {
+				((TermCollection)constant).setBase(base);
+				base += constant.getSize();
 			}
 		}
 	}
