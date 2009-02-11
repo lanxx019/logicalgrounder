@@ -22,7 +22,6 @@ public class Theory implements Node {
 	}
 	
 	public boolean updateVariable() {
-		boolean update = false;
 		for (int i = 0; i < this.variables.size(); i++) {
 			Variable variable = this.variables.get(i);
 			if (variable.hasNextValue()) {
@@ -33,7 +32,7 @@ public class Theory implements Node {
 				return true;
 			}
 		}
-		return update;
+		return false;
 	}
 	
 	public String getCurrentValue() {
