@@ -4,7 +4,6 @@ import edu.umn.grounder.core.*;
 import edu.umn.grounder.expression.Clause;
 import edu.umn.grounder.expression.Literal;
 import edu.umn.grounder.expression.Theory;
-import edu.umn.grounder.instance.AbstractFunctionInstance;
 import edu.umn.grounder.instance.ConstantFunctionInstance;
 import edu.umn.grounder.instance.Variable;
 
@@ -65,11 +64,12 @@ public class Test {
 		Theory t = new Theory();
 		t.addClause(clause_1);
 		t.addClause(clause_2);
+		t.addVariable(u);
 		t.addVariable(v);
 		t.addVariable(w);
-		t.addVariable(u);
-		while (t.updateVariable()) {
+		while (t.hasNextValue()) {
 			System.out.println(t.getCurrentValue());
+			t.updateVariable();
 		}
 	}
 
