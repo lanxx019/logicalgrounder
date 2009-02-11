@@ -1,20 +1,20 @@
 package edu.umn.grounder.expression;
 
 import edu.umn.grounder.instance.ConstantFunctionInstance;
-import edu.umn.grounder.instance.ObjectFunctionInstance;
+import edu.umn.grounder.instance.Instance;
 
 public class Literal implements Node {
 	private ConstantFunctionInstance lhs;
-	private ObjectFunctionInstance rhs;
+	private Instance rhs;
 	private boolean sign;
 	
-	public Literal(ConstantFunctionInstance lhs, ObjectFunctionInstance rhs) {
+	public Literal(ConstantFunctionInstance lhs, Instance rhs) {
 		this.lhs = lhs;
 		this.rhs = rhs;
 		this.sign = true;
 	}
 	
-	public Literal(ConstantFunctionInstance lhs, ObjectFunctionInstance rhs, boolean sign) {
+	public Literal(ConstantFunctionInstance lhs, Instance rhs, boolean sign) {
 		this(lhs, rhs);
 		this.sign = sign;
 	}
