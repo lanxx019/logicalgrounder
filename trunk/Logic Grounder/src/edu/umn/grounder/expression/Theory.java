@@ -11,6 +11,7 @@ public class Theory implements Node {
 	
 	public Theory() {
 		this.clauses = new ArrayList<Clause>();
+		this.variables = new ArrayList<Variable>();
 	}
 	
 	public void addClause(Clause clause) {
