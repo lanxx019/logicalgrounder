@@ -47,7 +47,7 @@ public class Variable implements Instance {
 	}
 	
 	public boolean hasNextValue() {
-		if (this.currentValue < this.sortType.getSize()) {
+		if (this.currentValue < this.sortType.getSize() - 1) {
 			return true;
 		} else {
 			return false;

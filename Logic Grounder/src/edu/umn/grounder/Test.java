@@ -67,10 +67,9 @@ public class Test {
 		t.addVariable(u);
 		t.addVariable(v);
 		t.addVariable(w);
-		while (t.hasNextValue()) {
+		do {
 			System.out.println(t.getCurrentValue());
-			t.updateVariable();
-		}
+		} while (t.updateVariable());
 	}
 
 }
