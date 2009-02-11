@@ -138,7 +138,7 @@ public abstract class AbstractFunction implements TermCollection {
 			int base = 1;
 			for (int i = this.arguments.size() - 1; i >= 0; i--) {
 				if (!this.arguments.get(i).isValidIndex(indexes[i])) {
-					throw new RuntimeException(this.getName() + ": accepting an illegal argument.");
+					throw new RuntimeException(this.getName() + ": accepting an illegal argument " + indexes[i]);
 				}
 				index += indexes[i] * base;
 				base *= this.arguments.get(i).getSize();
