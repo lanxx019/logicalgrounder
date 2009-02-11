@@ -22,29 +22,37 @@ public class Theory implements Node {
 		this.variables.add(variable);
 	}
 	
-	public boolean updateVariable() {
-		for (int i = 0; i < this.variables.size(); i++) {
-			Variable variable = this.variables.get(i);
+	public boolean hasNextValue() {
+		for (Variable variable : this.variables) {
 			if (variable.hasNextValue()) {
-				variable.updateValue();
-				for (int j = 0; j < i; j++) {
-					this.variables.get(j).initValue();
-				}
 				return true;
 			}
 		}
 		return false;
 	}
 	
+	public void updateVariable() {
+		for (int i = 0; i < this.variables.size(); i++) {
+			Variable variable = this.variables.get(i);
+			if (variable.hasNextValue()) {
+				for (int j = 0; j < i; j++) {
+					this.variables.get(j).initValue();
+				}
+				variable.updateValue();
+			}
+		}
+	}
+	
 	public String getCurrentValue() {
 		String result = "{";
-		int count = 0;
+		int count = 1;
 		for (Clause clause : this.clauses) {
 			if (count == this.clauses.size()) {
 				result += clause.getCurrentValue();
 			} else {
 				result += clause.getCurrentValue() + ", ";
 			}
+			count++;
 		}
 		return result + "}";
 	}

@@ -16,13 +16,14 @@ public class Clause implements Node {
 	
 	public String getCurrentValue() {
 		String result = "{";
-		int count = 0;
+		int count = 1;
 		for (Literal literal : this.literals) {
 			if (count == this.literals.size()) {
 				result += literal.getCurrentValue();
 			} else {
 				result += literal.getCurrentValue() + ", ";
 			}
+			count++;
 		}
 		return result + "}";
 	}
