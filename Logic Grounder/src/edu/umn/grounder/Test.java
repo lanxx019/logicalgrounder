@@ -53,7 +53,6 @@ public class Test {
 		
 		AbstractFunctionInstance test = new ConstantFunctionInstance(f);
 		test.addArgument(u);
-		System.out.println(f.getBase());
 		while (u.hasNextValue()) {
 			System.out.println(test.getCurrentValue());
 			u.updateValue();
