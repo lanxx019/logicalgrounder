@@ -10,25 +10,25 @@ import edu.umn.grounder.instance.Variable;
 public class Test {
 
 	public static void main(String[] args) {
-		Language lan = new Language();
+		LogicContext lan = new LogicContext();
 		
 		// sorts: S.
 		Sort s = new Sort("S");
-		lan.addSortContainer(s);
+		lan.addSort(s);
 		
 		// objects:
 		// S: a, b, c.
 		ObjectFunction a = new ObjectFunction("a", s);
-		s.addObjectTermContainer(a);
-		lan.addObjectTermContainer(a);
+		s.addObjectTermCollection(a);
+		lan.addObjectTermCollection(a);
 		
 		ObjectFunction b = new ObjectFunction("b", s);
-		s.addObjectTermContainer(b);
-		lan.addObjectTermContainer(b);
+		s.addObjectTermCollection(b);
+		lan.addObjectTermCollection(b);
 		
 		ObjectFunction c = new ObjectFunction("c", s);
-		s.addObjectTermContainer(c);
-		lan.addObjectTermContainer(c);
+		s.addObjectTermCollection(c);
+		lan.addObjectTermCollection(c);
 		
 		// variables:
 		// S: v, u, w.
@@ -44,10 +44,10 @@ public class Test {
 		// S: g.		
 		ConstantFunction f = new ConstantFunction("f", s);
 		f.addArgument(s);
-		lan.addConstantTermContainer(f);
+		lan.addConstantTermCollection(f);
 		
 		ConstantFunction g = new ConstantFunction("g", s);
-		lan.addConstantTermContainer(g);
+		lan.addConstantTermCollection(g);
 		lan.init();
 		
 		System.out.println(lan.toString());
@@ -68,7 +68,7 @@ public class Test {
 		t.addVariable(v);
 		t.addVariable(w);
 		do {
-			System.out.println(t.getCurrentValue());
+			System.out.println(t.getCurrentValueString());
 		} while (t.updateVariable());
 	}
 

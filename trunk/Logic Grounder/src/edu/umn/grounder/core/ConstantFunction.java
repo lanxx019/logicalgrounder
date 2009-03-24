@@ -3,7 +3,7 @@ package edu.umn.grounder.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ConstantFunction extends AbstractFunction implements ConstantTermContainer {
+public class ConstantFunction extends AbstractFunction implements IConstantTermCollection {
 	private static Logger log = LoggerFactory.getLogger(ConstantFunction.class);
 	
 	public ConstantFunction() {
@@ -12,6 +12,7 @@ public class ConstantFunction extends AbstractFunction implements ConstantTermCo
 	
 	public ConstantFunction(String name) {
 		super(name);
+		log.debug("Creating constant function: " + this.getName());
 	}
 	
 	public ConstantFunction(String name, Sort sortType) {
@@ -19,7 +20,6 @@ public class ConstantFunction extends AbstractFunction implements ConstantTermCo
 	}
 	
 	public String getConstantTerm(int index) {
-		// TODO Auto-generated method stub
 		return this.getTerm(index);
 	}
 }

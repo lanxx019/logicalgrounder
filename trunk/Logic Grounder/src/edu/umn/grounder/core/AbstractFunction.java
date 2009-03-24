@@ -3,79 +3,32 @@ package edu.umn.grounder.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public abstract class AbstractFunction implements TermCollection {
-	private String name;
-	private int size;
-	private int base;
-	private Sort sortType;
-	private List<SortContainer> arguments;
-	private static Logger log = LoggerFactory.getLogger(AbstractFunction.class);
+public abstract class AbstractFunction extends AbstractTermCollection {
+	private List<AbstractSort> arguments;
 	
 	public AbstractFunction() {
-		this.name = null;
-		this.size = 0;
-		this.base = -1;
-		this.sortType = null;
-		this.arguments = new ArrayList<SortContainer>();
+		this.setName(null);
+		this.setSize(0);
+		this.setBase(-1);
+		this.setSortType(null);
+		this.arguments = new ArrayList<AbstractSort>();
 	}
 	
 	public AbstractFunction(String name) {
 		this();
-		this.name = name;
+		this.setName(name);
 	}
 	
 	public AbstractFunction(String name, Sort sortType) {
-		this();
-		this.name = name;
-		this.sortType = sortType;
+		this(name);
+		this.setSortType(sortType);
 	}
 	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getName() {
-		return this.name;
-	}
-	
-	public void setSize(int size) {
-		this.size = size;
-	}
-	
-	public int getSize() {
-		if (this.size < 1 ) {
-			this.size = this.calculateSize();
-		}
-		return this.size;
-	}
-	
-	public void setBase(int base) {
-		this.base = base;
-	}
-	
-	public int getBase() {
-		if (this.base < 0) {
-			AbstractFunction.log.debug("Function " + this.getName() + "'s base value is -1.");
-		}
-		return this.base;
-	}
-	
-	public void setSortType(Sort sortType) {
-		this.sortType = sortType;
-	}
-	
-	public Sort getSortType() {
-		return this.sortType;
-	}
-	
-	public void addArgument(SortContainer arg) {
+	public void addArgument(AbstractSort arg) {
 		this.arguments.add(arg);
 	}
 	
-	public SortContainer getArgument(int index) {
+	public AbstractSort getArgument(int index) {
 		return this.arguments.get(index);
 	}
 	
@@ -85,14 +38,14 @@ public abstract class AbstractFunction implements TermCollection {
 	
 	public int calculateSize() {
 		int size = 1;
-		for (SortContainer sort : this.arguments) {
+		for (AbstractSort sort : this.arguments) {
 				size *= sort.getSize();
 		}
 		return size;
 	}
 	
-	public boolean dependsOn(Sort sort) {
-		for (SortContainer s : this.arguments) {
+	public boolean dependsOn(AbstractSort sort) {
+		for (AbstractSort s : this.arguments) {
 			if (s == sort) {
 				return true;
 			}
@@ -104,14 +57,14 @@ public abstract class AbstractFunction implements TermCollection {
 		if (!this.isLegalIndex(index)) {
 			return null;
 		} else {
-			if (this.size == 1) {
-				return this.name;
+			if (this.getSize() == 1) {
+				return this.getName();
 			} else {
 				String result = this.getName() + "(";
 				int quot = index;
 				int rem = 0;
 				for (int i = 0; i < this.arguments.size(); i++) {
-					SortContainer sort = this.arguments.get(i);
+					AbstractSort sort = this.arguments.get(i);
 					int temp = quot;
 					rem = sort.getSize();
 					quot = temp / rem;
@@ -129,7 +82,7 @@ public abstract class AbstractFunction implements TermCollection {
 	
 	public int getTermIndex(int[] indexes) {
 		if (indexes.length != this.arguments.size()) {
-			throw new RuntimeException(this.name + ": wrong numbers of arguments.");
+			throw new RuntimeException(this.getName() + ": wrong numbers of arguments.");
 		}
 		if (this.arguments.size() == 0) {
 			return this.getBase();
@@ -144,7 +97,7 @@ public abstract class AbstractFunction implements TermCollection {
 				base *= this.arguments.get(i).getSize();
 			}
 			index += this.getBase();
-			if (index < this.base || index >= this.base + this.getSize()) {
+			if (index < this.getBase() || index >= this.getBase() + this.getSize()) {
 				throw new RuntimeException(this.getName() + " returns a impossible value.");
 			}
 			return index;
@@ -162,11 +115,11 @@ public abstract class AbstractFunction implements TermCollection {
 	}
 	
 	public String toString() {
-		String result = this.name;
+		String result = this.getName();
 		if (this.arguments.size() != 0) {
 			int count = 1;
 			result += "(";
-			for (SortContainer container : this.arguments) {
+			for (AbstractSort container : this.arguments) {
 				if (count < this.arguments.size()) {
 					result += container.getName() + ",";
 				} else {

@@ -23,7 +23,7 @@ public class Literal implements Node {
 		this.sign = !this.sign;
 	}
 	
-	public String getCurrentValue() {
+	public String getCurrentValueString() {
 		if (this.sign) {
 			return lhs.getCurrentValue() + "=" + rhs.getCurrentValue();
 		} else {

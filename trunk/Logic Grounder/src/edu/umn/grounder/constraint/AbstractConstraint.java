@@ -1,34 +1,47 @@
 package edu.umn.grounder.constraint;
 
-import edu.umn.grounder.instance.Variable;
 
 public abstract class AbstractConstraint implements Constraint {
-	private int number;
-	private Variable variable;
+	private Comparable lhs;
+	private Comparable rhs;
+	private String operator;
 	
 	public AbstractConstraint() {
-		this.number = -1;
-		this.variable = null;
+		this.lhs = null;
+		this.rhs = null;
+		this.operator = null;
 	}
 	
-	public AbstractConstraint(int number, Variable variable) {
-		this.number = number;
-		this.variable = variable;
+	public AbstractConstraint(Comparable lhs, Comparable rhs) {
+		this.lhs = lhs;
+		this.rhs = rhs;
 	}
 	
-	public int getNumber() {
-		return this.number;
+	public Comparable getLhs() {
+		return this.lhs;
 	}
 	
-	public void setNumber(int number) {
-		this.number = number;
+	public void setLhs(Comparable lhs) {
+		this.lhs = lhs;
 	}
 	
-	public Variable getVariable() {
-		return this.variable;
+	public Comparable getRhs() {
+		return this.rhs;
 	}
 	
-	public void setVariable(Variable variable) {
-		this.variable = variable;
+	public void setRhs(Comparable variable) {
+		this.rhs = variable;
+	}
+	
+	public String getOperator() {
+		return this.operator;
+	}
+	
+	public void setOperator(String operator) {
+		this.operator = operator;
+	}
+	
+	public String toString() {
+		return lhs.toString() + " " + this.getOperator() + " " + rhs.toString();
 	}
 }
