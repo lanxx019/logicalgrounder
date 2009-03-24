@@ -14,17 +14,29 @@ public class Clause implements Node {
 		this.literals.add(literal);
 	}
 	
-	public String getCurrentValue() {
-		String result = "{";
+	public String getCurrentValueString() {
+		String result = "";
 		int count = 1;
 		for (Literal literal : this.literals) {
 			if (count == this.literals.size()) {
-				result += literal.getCurrentValue();
+				result += literal.getCurrentValueString();
 			} else {
-				result += literal.getCurrentValue() + ", ";
+				result += literal.getCurrentValueString() + " ";
 			}
 			count++;
 		}
-		return result + "}";
+		return result;
+	}
+	
+	public String toString() {
+		String result = "";
+		for (int i = 0; i < this.literals.size(); i++) {
+			if (i == (this.literals.size() - 1)) {
+				result += this.literals.get(i).toString();
+			} else {
+				result += this.literals.get(i).toString() + ", ";
+			}
+		}
+		return result;
 	}
 }

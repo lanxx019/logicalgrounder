@@ -1,67 +1,60 @@
 package edu.umn.grounder.core;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Sort implements SortContainer, ObjectTermContainer {
-	private String name;
-	private int size;
-	private Map<String, ObjectTermContainer> containers;
+import edu.umn.grounder.LogicContext;
+
+
+public class Sort extends AbstractSort {
+	private Map<String, IObjectTermCollection> collections;
 	private static Logger log = LoggerFactory.getLogger(Sort.class);
 
 	public Sort(String name) {
-		this.name = name;
-		this.size = 0;
-		this.containers = new HashMap<String, ObjectTermContainer>();
-		Sort.log.debug("Create Sort: " + this.name);
+		this.setName(name);
+		this.setSize(0);
+		this.collections = new LinkedHashMap<String, IObjectTermCollection>();
+		log.debug("Creating sort: " + this.getName());
 	}
 
-	public String getName() {
-		return this.name;
-	}
-
-	public int getSize() {
-		if (this.size == 0) {
-			this.size = this.calculateSize();
-			Sort.log.debug("The size is: " + this.size);
-		}
-		return this.size;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
-
-	public void addObjectTermContainer(ObjectTermContainer container) {
-		if (!(container instanceof TermCollection)) {
+	public void addObjectTermCollection(IObjectTermCollection collection) {
+		if (!(collection instanceof AbstractTermCollection)) {
 			throw new RuntimeException(
 					"Trying to add a non TermCollection object:"
-							+ container.getName() + " into Sort " + this.name);
+							+ collection.getName() + " into Sort " + this.getName());
 		}
-		((TermCollection) container).setSortType(this);
-		this.containers.put(container.getName(), container);
+		collection.setSortType(this);
+		this.collections.put(collection.getName(), collection);
 	}
 
-	public ObjectTermContainer getObjectTermContainer(String name) {
-		return this.containers.get(name);
+	public void addObjectTermCollections(List<IObjectTermCollection> collections) {
+		for (IObjectTermCollection collection : collections) {
+			this.addObjectTermCollection(collection);
+		}
+	}
+	
+	public IObjectTermCollection getObjectTermCollection(String name) {
+		return this.collections.get(name);
 	}
 
-	public boolean hasObjectTermContainer(String containerName) {
-		return this.containers.containsKey(containerName);
+	public boolean hasObjectTermCollection(String collectionName) {
+		return this.collections.containsKey(collectionName);
+	}
+	
+	public boolean hasObjectTermCollection(IObjectTermContainer collection) {
+		return this.collections.containsValue(collection);
 	}
 
-	public boolean hasObjectTermContainer(ObjectTermContainer container) {
-		return this.containers.containsValue(container);
-	}
-
-	public void init() throws FinitenessCheckFailedException {
+	public void init(LogicContext language) throws FinitenessCheckFailedException {
+		// Init all object term collections
+		for (IObjectTermCollection collection : this.collections.values()) {
+			collection.init(language);
+		}
+		
 		// Check dependency graph and make sure there is no cycle.
 		if (this.dependsOn(this)) {
 			throw new FinitenessCheckFailedException(this);
@@ -72,17 +65,17 @@ public class Sort implements SortContainer, ObjectTermContainer {
 
 		// Update the base for each Container.
 		int base = 0;
-		for (ObjectTermContainer container : this.containers.values()) {
-			((TermCollection) container).setBase(base);
-			base += container.getSize();
+		for (IObjectTermCollection collection : this.collections.values()) {
+			collection.setBase(base);
+			base += collection.getSize();
 		}
 	}
 
 	public String getObjectTerm(int index) {
 		// TODO How to get ObjectTerm from Sort?
 		String result = null;
-		for (ObjectTermContainer container : this.containers.values()) {
-			if ((result = container.getObjectTerm(index)) != null) {
+		for (IObjectTermCollection collection : this.collections.values()) {
+			if ((result = collection.getObjectTerm(index)) != null) {
 				return result;
 			}
 		}
@@ -91,15 +84,15 @@ public class Sort implements SortContainer, ObjectTermContainer {
 
 	public int calculateSize() {
 		int size = 0;
-		for (Container container : this.containers.values()) {
-			size += container.getSize();
+		for (IObjectTermContainer collection : this.collections.values()) {
+			size += collection.getSize();
 		}
 		return size;
 	}
 
-	public boolean dependsOn(Sort sort) {
-		for (Container container : this.containers.values()) {
-			if (container.dependsOn(sort)) {
+	public boolean dependsOn(AbstractSort sort) {
+		for (IObjectTermContainer collection : this.collections.values()) {
+			if (collection.dependsOn(sort)) {
 				return true;
 			}
 		}
@@ -107,15 +100,15 @@ public class Sort implements SortContainer, ObjectTermContainer {
 	}
 	
 	public int getNumberOfContainers() {
-		return this.containers.size();
+		return this.collections.size();
 	}
 	
 	public String toString() {
-		String result = this.name + ": ";
+		String result = this.getName() + ": ";
 		int count = 0;
-		for (ObjectTermContainer container : this.containers.values()) {
+		for (IObjectTermContainer container : this.collections.values()) {
 			count++;
-			if (count < this.containers.size()) {
+			if (count < this.collections.size()) {
 				result += container.toString() + ", ";
 			} else {
 				result += container.toString();

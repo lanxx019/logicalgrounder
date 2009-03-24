@@ -1,11 +1,16 @@
 package edu.umn.grounder.instance;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import edu.umn.grounder.core.AbstractSort;
 import edu.umn.grounder.core.Sort;
 
 public class Variable implements Instance {
 	private String name;
-	private Sort sortType;
+	private AbstractSort sortType;
 	private int currentValue;
+	private static Logger log = LoggerFactory.getLogger(Variable.class);
 	
 	public Variable() {
 		this.name = null;
@@ -16,6 +21,7 @@ public class Variable implements Instance {
 	public Variable(String name) {
 		this();
 		this.name = name;
+		log.debug("Creating variable: " + this.name);
 	}
 	
 	public Variable(String name, Sort sortType) {
@@ -27,15 +33,11 @@ public class Variable implements Instance {
 		return this.name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Sort getSortType() {
+	public AbstractSort getSortType() {
 		return this.sortType;
 	}
 	
-	public void setSortType(Sort sortType) {
+	public void setSortType(AbstractSort sortType) {
 		this.sortType = sortType;
 	}
 	
@@ -59,7 +61,7 @@ public class Variable implements Instance {
 	}
 	
 	public String toString() {
-		return this.sortType.getName() + ": " + this.name;
+		return this.name;
 	}
 
 	public int getCurrentValue() {

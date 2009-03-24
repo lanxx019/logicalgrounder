@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.umn.grounder.core.AbstractFunction;
-import edu.umn.grounder.core.ObjectFunction;
-import edu.umn.grounder.core.SortContainer;
+import edu.umn.grounder.core.AbstractSort;
 
 public class AbstractFunctionInstance implements Instance {
 	private AbstractFunction function;
-	private List<Instance> arguments;
+	private List<Instance> arguments = new ArrayList<Instance>();
 
+	public AbstractFunctionInstance() {
+		this.function = null;
+	}
+	
 	public AbstractFunctionInstance(AbstractFunction function) {
 		this.function = function;
-		this.arguments = new ArrayList<Instance>();
 	}
 	
 	public void setFunction(AbstractFunction function) {
@@ -27,14 +29,14 @@ public class AbstractFunctionInstance implements Instance {
 	public void addArgument(Instance arg) {
 		if (this.function.getNumberOfArguments() == 0) {
 			throw new RuntimeException(this.function.getName() + " doesn't take arguments.");
-		} else if (this.function.getArgument(this.arguments.size()) != this.getSortType()) {
+		} else if (this.function.getArgument(this.arguments.size()) != arg.getSortType()) {
 			throw new RuntimeException(this.function.getName() + ": wrong type of argument.");
 		} else {
 			this.arguments.add(arg);
 		}
 	}
 	
-	public SortContainer getSortType() {
+	public AbstractSort getSortType() {
 		return this.function.getSortType();
 	}
 	
@@ -68,9 +70,5 @@ public class AbstractFunctionInstance implements Instance {
 
 	public String getName() {
 		return this.toString();
-	}
-
-	public void setName(String name) {
-		
 	}
 }

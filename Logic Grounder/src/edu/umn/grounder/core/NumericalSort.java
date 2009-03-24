@@ -3,63 +3,45 @@ package edu.umn.grounder.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NumericalSort implements SortContainer {
-	private String name;
+import edu.umn.grounder.LogicContext;
+
+public class NumericalSort extends AbstractSort {
 	private int first;
 	private int last;
-	private int size;
-	private static Logger log = LoggerFactory.getLogger(NumericalSort.class);
+	private static Logger log = LoggerFactory.getLogger(ObjectFunction.class);
 
 	public NumericalSort() {
-		this.name = null;
+		this.setName(null);
+		this.setSize(0);
 		this.first = -1;
 		this.last = -1;
-		this.size = 0;
 	}
 	
 	public NumericalSort(String name) {
 		this();
-		this.name = name;
+		this.setName(name);
 	}
 	
 	public NumericalSort(String name, int first, int last) {
 		this(name);
 		if (last < first) {
-			throw new RuntimeException(this.name + ": illegal range.");
+			throw new RuntimeException(this.getName() + ": illegal range.");
 		}
 		this.first = first;
 		this.last = last;
+		log.debug("Creating numerical sort: " + this.getName());
 	}
 	
-	public void init() throws FinitenessCheckFailedException {
-		
+	public void init(LogicContext language) throws FinitenessCheckFailedException {
+		this.setSize(this.calculateSize());
 	}
 
 	public int calculateSize() {
 		return last - first + 1;
 	}
 
-	public boolean dependsOn(Sort sort) {
+	public boolean dependsOn(AbstractSort sort) {
 		return false;
-	}
-
-	public int getSize() {
-		if (this.size == 0) {
-			this.size = this.calculateSize();
-		}
-		return this.size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getObjectTerm(int index) {
@@ -67,7 +49,7 @@ public class NumericalSort implements SortContainer {
 	}
 
 	public String toString() {
-		return this.name + this.first + "..." + this.last;
+		return this.getName() + ": " + this.first + "..." + this.last;
 	}
 
 	public boolean isValidIndex(int index) {
