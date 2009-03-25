@@ -6,7 +6,7 @@ import java.util.List;
 import edu.umn.grounder.constraint.Constraint;
 import edu.umn.grounder.instance.Variable;
 
-public class Theory implements Node {
+public class Theory {
 	private List<Clause> clauses;
 	private List<Variable> variables;
 	private List<Constraint> constraints;
@@ -30,7 +30,6 @@ public class Theory implements Node {
 	}
 	
 	public boolean updateVariable() {
-		// TODO add constraints checking!
 		for (int i = 0; i < this.variables.size(); i++) {
 			Variable variable = this.variables.get(i);
 			if (variable.hasNextValue()) {
@@ -44,6 +43,7 @@ public class Theory implements Node {
 		return false;
 	}
 	
+	@Deprecated
 	public String getCurrentValueString() {
 		String result = "";
 		int count = 1;
@@ -65,6 +65,12 @@ public class Theory implements Node {
 			}
 		}
 		return true;
+	}
+	
+	public void initVariables() {
+		for (Variable var : this.variables) {
+			var.initValue();
+		}
 	}
 	
 	public String toHBTheory() {
@@ -90,11 +96,14 @@ public class Theory implements Node {
 	
 	public String toFDTheory() {
 		String result = "";
-		do {
-			if (this.areConstraintsSatisfied()) {
-				result += this.getCurrentValueString() + "\n";
-			}
-		} while (this.updateVariable());
+		for (Clause clause : this.clauses) {
+			do {
+				if (this.areConstraintsSatisfied()) {
+					result += clause.getCurrentValueString() + " 0 \n";
+				}
+			} while (this.updateVariable());
+			this.initVariables();
+		}
 		return result;
 	}
 	
