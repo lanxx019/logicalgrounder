@@ -3,15 +3,23 @@ package edu.umn.grounder.expression;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.umn.grounder.instance.Variable;
+
 public class Clause implements Node {
 	private List<Literal> literals;
+	private List<Variable> variables;
 	
 	public Clause() {
 		this.literals = new ArrayList<Literal>();
+		this.variables = new ArrayList<Variable>();
 	}
 	
 	public void addLiteral(Literal literal) {
 		this.literals.add(literal);
+	}
+	
+	public void addVariable(Variable variable) {
+		this.variables.add(variable);
 	}
 	
 	public String getCurrentValueString() {
