@@ -79,7 +79,7 @@ public class Theory {
 			if (i == (this.clauses.size() - 1)) {
 				result += this.clauses.get(i).toString();
 			} else {
-				result += this.clauses.get(i).toString() + ";";
+				result += this.clauses.get(i).toString() + "; ";
 			}
 		}
 		result += ". ";

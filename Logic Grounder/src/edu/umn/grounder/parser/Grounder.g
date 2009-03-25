@@ -46,9 +46,9 @@ sortSection
   : SORTS ':' sorts '.';
   
 sorts returns [List<String> value = new ArrayList<String>()]
-  : aSort[$value] (',' aSort[$value])*;
+  : sort[$value] (',' sort[$value])*;
   
-aSort[List<String> param] returns [String value]
+sort[List<String> param] returns [String value]
   : NAME 
   {
     $value = $NAME.text;
@@ -67,25 +67,25 @@ objectSortSections
   : objectsInOneSort (';' objectsInOneSort)*;
   
 objectsInOneSort
-  : aSort[null]
+  : sort[null]
   { 
     Sort sort = null;
-    if (language.hasRecorded($aSort.value)) {
-      sort = new Sort($aSort.value);
+    if (language.hasRecorded($sort.value)) {
+      sort = new Sort($sort.value);
       language.addSort(sort); 
     } else {
       String msg = "Sort %s has not been defined in the sort section!";
-      this.printErrorMessage(String.format(msg, $aSort.value));
+      this.printErrorMessage(String.format(msg, $sort.value));
     }
   } ':' objects[sort]
-  | aSort[null] ':' min '...' max 
+  | sort[null] ':' min '...' max 
   {
-    if (language.hasRecorded($aSort.value)) { 
-      NumericalSort sort = new NumericalSort($aSort.value, $min.value, $max.value);
+    if (language.hasRecorded($sort.value)) { 
+      NumericalSort sort = new NumericalSort($sort.value, $min.value, $max.value);
       language.addSort(sort); 
     } else {
       String msg = "Sort %s has not been defined in the sort section!";
-      this.printErrorMessage(String.format(msg, $aSort.value));
+      this.printErrorMessage(String.format(msg, $sort.value));
     }
   };
 
@@ -102,9 +102,9 @@ max returns [int value]
   };
 
 objects[Sort param]
-  : aObject[$param] (',' aObject[$param])*;
+  : object[$param] (',' object[$param])*;
   
-aObject[Sort param]
+object[Sort param]
   : NAME ('(' sorts ')')*
   {
     ObjectFunction function = new ObjectFunction($NAME.text);
@@ -126,15 +126,15 @@ variableSortSections
   : variablesInOneSort (';' variablesInOneSort)*;
 
 variablesInOneSort
-  : aSort[null]
+  : sort[null]
   {
-    AbstractSort sort = language.getSort($aSort.value);
+    AbstractSort sort = language.getSort($sort.value);
   } ':' variables[sort];
   
 variables[AbstractSort param]
-  : aVariable[$param] (',' aVariable[$param])*;
+  : variable[$param] (',' variable[$param])*;
 
-aVariable[AbstractSort param] 
+variable[AbstractSort param] 
   : NAME 
   { 
     Variable var = null;
@@ -152,15 +152,15 @@ constantSortSections
   : constantsInOneSort (';' constantsInOneSort)*;
   
 constantsInOneSort
-  : aSort[null] 
+  : sort[null] 
   {
-    AbstractSort sort = language.getSort($aSort.value);
+    AbstractSort sort = language.getSort($sort.value);
   } ':' constants[sort];
   
 constants[AbstractSort param]
-  : aConstant[$param] (',' aConstant[$param])*;
+  : constant[$param] (',' constant[$param])*;
   
-aConstant[AbstractSort param]
+constant[AbstractSort param]
   : NAME ('(' sorts ')')*
   {
     ConstantFunction function = new ConstantFunction($NAME.text);
@@ -177,21 +177,24 @@ aConstant[AbstractSort param]
 
 // $<theory
 theory
-  : clauses '.' (constraints)*;
+  : clauses '.';
 // $>
 
 // $<clauses
 clauses
-  : aClause (';' aClause)*;
+  : clause (';' clause)*;
 
-aClause
+clause
   : {Clause clause = new Clause();}
-  aLiteral[clause] (',' aLiteral[clause])*
+  literals[clause] (':' constraints)*
   {
     language.getTheory().addClause(clause);
-  };
+  } ;
 
-aLiteral[Clause param]
+literals[Clause param]
+  : literal[$param] (',' literal[$param])*;
+
+literal[Clause param]
   : lhs sign rhs
   {
     $param.addLiteral(new Literal($lhs.value, $rhs.value, $sign.value));
@@ -212,7 +215,7 @@ lhs returns [ConstantFunctionInstance value]
   {
     $value = new ConstantFunctionInstance(
       language.getConstantTermCollection($NAME.text));
-  } ('(' argumentList[(AbstractFunctionInstance)$value] ')')*;
+  } ('(' arguments[(AbstractFunctionInstance)$value] ')')*;
 
 rhs returns [Instance value]
   : NAME
@@ -224,12 +227,12 @@ rhs returns [Instance value]
       $value = new ObjectFunctionInstance(
         language.getObjectTermCollection($NAME.text));
     }
-  } ('(' argumentList[(AbstractFunctionInstance)$value] ')')*;
+  } ('(' arguments[(AbstractFunctionInstance)$value] ')')*;
   
-argumentList[AbstractFunctionInstance param]
-  : aArgument[$param] (',' aArgument[$param])*;
+arguments[AbstractFunctionInstance param]
+  : argument[$param] (',' argument[$param])*;
   
-aArgument[AbstractFunctionInstance param]
+argument[AbstractFunctionInstance param]
   : NAME
   {
     Instance instance = null;
@@ -241,14 +244,14 @@ aArgument[AbstractFunctionInstance param]
             language.getObjectTermCollection($NAME.text));
     }
     $param.addArgument(instance);
-  } ('(' argumentList[(AbstractFunctionInstance)instance] ')')*;
+  } ('(' arguments[(AbstractFunctionInstance)instance] ')')*;
 // $>
 
 // $<constraints
 constraints
-  : aConstraint (',' aConstraint)*;
+  : constraint (',' constraint)*;
 
-aConstraint
+constraint
   : left '==' right
   {
     Constraint constraint = new Equal($left.value, $right.value);

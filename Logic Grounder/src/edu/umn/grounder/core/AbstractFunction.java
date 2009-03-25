@@ -121,7 +121,7 @@ public abstract class AbstractFunction extends AbstractTermCollection {
 			result += "(";
 			for (AbstractSort container : this.arguments) {
 				if (count < this.arguments.size()) {
-					result += container.getName() + ",";
+					result += container.getName() + ", ";
 				} else {
 					result += container.getName();
 				}

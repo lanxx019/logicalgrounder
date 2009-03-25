@@ -57,7 +57,7 @@ public class AbstractFunctionInstance implements Instance {
 			result += "(";
 			for (Instance instance : this.arguments) {
 				if (count < this.arguments.size()) {
-					result += instance.getName() + ",";
+					result += instance.getName() + ", ";
 				} else {
 					result += instance.getName();
 				}
