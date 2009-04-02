@@ -17,12 +17,13 @@ options {
 
 @members { 
    private LogicContext language = new LogicContext(); 
+   private Clause currentClause = null;
    
-   public void setLanguage(LogicContext language) {
+   public void setLogicContext(LogicContext language) {
     this.language = language;
    }
    
-   public LogicContext getLanguage() {
+   public LogicContext getLogicContext() {
     return this.language;
    }
    
@@ -177,7 +178,7 @@ constant[AbstractSort param]
 
 // $<theory
 theory
-  : clauses '.';
+  : clauses '.' globalConstraints;
 // $>
 
 // $<clauses
@@ -185,8 +186,12 @@ clauses
   : clause (';' clause)*;
 
 clause
-  : {Clause clause = new Clause();}
-  literals[clause] (':' constraints)*
+  : 
+  {
+    Clause clause = new Clause();
+    currentClause = clause;
+  }
+  literals[clause] (':' constraints[clause])*
   {
     language.getTheory().addClause(clause);
   } ;
@@ -222,10 +227,10 @@ rhs returns [Instance value]
   {
     if (language.hasVariable($NAME.text)) {
       $value = language.getVariable($NAME.text);
-      language.getTheory().addVariable((Variable)$value);
+      currentClause.addVariable((Variable)$value);
     } else if (language.hasObjectTermCollection($NAME.text)) {
       $value = new ObjectFunctionInstance(
-        language.getObjectTermCollection($NAME.text));
+      language.getObjectTermCollection($NAME.text));
     }
   } ('(' arguments[(AbstractFunctionInstance)$value] ')')*;
   
@@ -238,49 +243,76 @@ argument[AbstractFunctionInstance param]
     Instance instance = null;
     if (language.hasVariable($NAME.text)) {
       instance = language.getVariable($NAME.text);
-      language.getTheory().addVariable((Variable)instance);
+      currentClause.addVariable((Variable)instance);
     } else if (language.hasObjectTermCollection($NAME.text)) {
       instance = new ObjectFunctionInstance(
-            language.getObjectTermCollection($NAME.text));
+      language.getObjectTermCollection($NAME.text));
     }
     $param.addArgument(instance);
   } ('(' arguments[(AbstractFunctionInstance)instance] ')')*;
 // $>
 
 // $<constraints
-constraints
-  : constraint (',' constraint)*;
+globalConstraints
+  : constraints[null];
 
-constraint
+constraints[Clause param]
+  : constraint[$param] (',' constraint[$param])*;
+
+constraint[Clause param]
   : left '==' right
   {
     Constraint constraint = new Equal($left.value, $right.value);
-    language.getTheory().addConstraint(constraint);
+    if ($param != null) {
+      $param.addConstraint(constraint);
+    } else {
+      language.getTheory().addGlobalConstraint(constraint);
+    }
   }
   | left '!=' right
   {
     Constraint constraint = new NotEqual($left.value, $right.value);
-    language.getTheory().addConstraint(constraint);
+    if ($param != null) {
+      $param.addConstraint(constraint);
+    } else {
+      language.getTheory().addGlobalConstraint(constraint);
+    }
   }
   | left '>' right
   {
     Constraint constraint = new Greater($left.value, $right.value);
-    language.getTheory().addConstraint(constraint);
+    if ($param != null) {
+      $param.addConstraint(constraint);
+    } else {
+      language.getTheory().addGlobalConstraint(constraint);
+    }
   }
   | left '>=' right
   {
     Constraint constraint = new GreaterOrEqual($left.value, $right.value);
-    language.getTheory().addConstraint(constraint);
+    if ($param != null) {
+      $param.addConstraint(constraint);
+    } else {
+      language.getTheory().addGlobalConstraint(constraint);
+    }
   }
   | left '<' right
   {
     Constraint constraint = new Less($left.value, $right.value);
-    language.getTheory().addConstraint(constraint);
+    if ($param != null) {
+      $param.addConstraint(constraint);
+    } else {
+      language.getTheory().addGlobalConstraint(constraint);
+    }
   }
   | left '<=' right
   {
     Constraint constraint = new LessOrEqual($left.value, $right.value);
-    language.getTheory().addConstraint(constraint);
+    if ($param != null) {
+      $param.addConstraint(constraint);
+    } else {
+      language.getTheory().addGlobalConstraint(constraint);
+    }
   };
   
 left returns [Comparable value]
