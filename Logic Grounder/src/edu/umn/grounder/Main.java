@@ -17,7 +17,7 @@ public class Main {
         } catch (RecognitionException e) {
             e.printStackTrace();
         }
-        LogicContext language = parser.getLanguage();
+        LogicContext language = parser.getLogicContext();
         language.init();
         System.out.println(language.toString());
 	}
