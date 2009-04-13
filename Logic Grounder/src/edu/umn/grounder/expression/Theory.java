@@ -22,6 +22,14 @@ public class Theory {
 		}
 	}
 	
+	public Clause getCurrentClause() {
+		if (this.clauses.size() == 0) {
+			return null;
+		} else {
+			return this.clauses.get(this.clauses.size() - 1);
+		}
+	}
+	
 	public String toHBTheory() {
 		String result = "";
 		for (int i = 0; i < this.clauses.size(); i++) {
