@@ -189,12 +189,9 @@ clause
   : 
   {
     Clause clause = new Clause();
-    currentClause = clause;
-  }
-  literals[clause] (':' constraints[clause])*
-  {
     language.getTheory().addClause(clause);
-  } ;
+  }
+  literals[clause] (':' constraints[clause])*;
 
 literals[Clause param]
   : literal[$param] (',' literal[$param])*;
@@ -227,7 +224,7 @@ rhs returns [Instance value]
   {
     if (language.hasVariable($NAME.text)) {
       $value = language.getVariable($NAME.text);
-      currentClause.addVariable((Variable)$value);
+      language.getTheory().getCurrentClause().addVariable((Variable)$value);
     } else if (language.hasObjectTermCollection($NAME.text)) {
       $value = new ObjectFunctionInstance(
       language.getObjectTermCollection($NAME.text));
@@ -243,7 +240,7 @@ argument[AbstractFunctionInstance param]
     Instance instance = null;
     if (language.hasVariable($NAME.text)) {
       instance = language.getVariable($NAME.text);
-      currentClause.addVariable((Variable)instance);
+      language.getTheory().getCurrentClause().addVariable((Variable)instance);
     } else if (language.hasObjectTermCollection($NAME.text)) {
       instance = new ObjectFunctionInstance(
       language.getObjectTermCollection($NAME.text));
