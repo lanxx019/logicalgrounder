@@ -1,0 +1,9 @@
+#Fri Jan 30 23:56:00 EST 2009
+CLEAR_CONSOLE=false
+JJ_NATURE=true
+JTB_OPTIONS=-p\=edu.umn.grounder.core
+RUNTIME_JAR=-intern-
+RUNTIME_JTBJAR=-intern-
+SHOW_CONSOLE=true
+SUPPRESS_WARNINGS=true
+eclipse.preferences.version=1
